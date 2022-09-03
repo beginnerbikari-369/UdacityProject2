@@ -17,10 +17,10 @@ resource "aws_rds_cluster_parameter_group" "cluster_pg-s" {
   }
 }
 
-resource "aws_db_subnet_group" "udacity_db_subnet_group" {
-  name       = "udacity_db_subnet_group"
-  subnet_ids = var.private_subnet_ids
-}
+# resource "aws_db_subnet_group" "udacity_db_subnet_group" {
+#   name       = "udacity_db_subnet_group"
+#   subnet_ids = var.private_subnet_ids
+# }
 
 resource "aws_rds_cluster" "udacity_cluster-s" {
   cluster_identifier       = "udacity-db-cluster-s"
