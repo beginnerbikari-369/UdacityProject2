@@ -22,7 +22,7 @@ provider "kubernetes" {
    vpc_id             = data.terraform_remote_state.vpc.outputs.vpc_id
    nodes_desired_size = 2
    nodes_max_size     = 2
-   nodes_min_size     = 1
+   nodes_min_size     = 2
    instance_policy    = data.aws_iam_policy.instance-policy
    cloudwatch_policy  = data.aws_iam_policy.cloudwatch-policy
    cluster_role       = data.aws_iam_role.eks_cluster_role
