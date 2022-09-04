@@ -37,7 +37,26 @@ Elastic Load Balancers:
 ### Pre-Steps:
 List steps you would perform to setup the infrastructure in the other region. It doesn't have to be super detailed, but high-level should suffice.
 
-You can copy and paste all from the zone1 folder into your zone2 folder and modify as needed. You'll then deploy this to zone2 using Terraform. A few areas to keep in mind:
+1. Ensure both sites are configured the same.
+2. You can use infrastructure as code (IaC) to do this.
+3. Ensure the infrastructure is set up and working in the DR site.
+
+
+## Steps:
+You won't actually perform these steps, but write out what you would do to "fail-over" your application and database cluster to the other region. Think about all the pieces that were setup and how you would use those in the other region
+
+1. Point your DNS to your secondary region
+      This can be done with a name provider like Amazon route 53
+2. Failover your database replication instances to another region
+      Manually force the secondary region to become primary at the database level, or
+      Automatically failover the database by health checks
+Steps:
+   1) Create a cloud load balancer and point DNS to the load balancer. This way you can have multiple instances behind 1 IP in a region. During a failover scenario, you would fail over the single DNS entry at your DNS provider to point to the DR site. This is much more intelligent than pointing to a single instance of a web server.
+   2) Have a replicated database and perform a failover on the database. While a backup is good and necessary, it is time-consuming to restore from backup. In this DR step, you would have already configured replication and would perform the database failover. Ideally, your application would be using a generic CNAME DNS record and would just connect to the DR instance of the database.
+
+
+Detailed view:
+  You can copy and paste all from the zone1 folder into your zone2 folder and modify as needed. You'll then deploy this to zone2 using Terraform. A few areas to keep in mind:
 
 You'll need to modify the aws provider to point to another zone
 You'll need to provision an S3 bucket in us-west-1 AND point your Terraform bucket to us-west-1
@@ -46,9 +65,6 @@ You'll need to look up the AWS documentation for this. Or use this command from 
 Modify your region local variable in main.tf to point to us-west-1
 Modify your aws_ami value in your ec2.tf file under your zone2 folder.
 
-
-## Steps:
-You won't actually perform these steps, but write out what you would do to "fail-over" your application and database cluster to the other region. Think about all the pieces that were setup and how you would use those in the other region
 
 You will need to modify the rds-p and rds-s modules and add the appropriate availability zones for the databases. You'll need to look these up.
 You will need to modify the rds-s module to add the appropriate Terraform bits to add it as a target for rds-p zone. Please see the Terraform registry documentation here
