@@ -13,7 +13,6 @@
    name               = local.name
    account            = data.aws_caller_identity.current.account_id
    aws_ami            = "ami-020582a2b11beb42e"
-   private_subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
-   public_subnet_ids = data.terraform_remote_state.vpc.outputs.public_subnet_ids
+   subnet_id = data.terraform_remote_state.vpc.outputs.public_subnet_ids
    vpc_id             = data.terraform_remote_state.vpc.outputs.vpc_id
  }
